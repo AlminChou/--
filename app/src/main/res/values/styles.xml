@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#0fb73d</item>
+        <item name="colorPrimaryDark">#0ba823</item>
+        <item name="colorAccent">#FF4081</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="CustomProgressStyle" parent="@android:style/Widget.ProgressBar">
+        <item name="android:minWidth">@dimen/progress_dialog_height</item>
+        <item name="android:maxWidth">@dimen/progress_dialog_height</item>
+        <item name="android:minHeight">@dimen/progress_dialog_height</item>
+        <item name="android:maxHeight">@dimen/progress_dialog_height</item>
+    </style>
+
+</resources>
