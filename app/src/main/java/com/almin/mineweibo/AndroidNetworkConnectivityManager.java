@@ -5,10 +5,10 @@ import android.widget.Toast;
 
 public class AndroidNetworkConnectivityManager {
 	public boolean isNetworkAvailable() {
-		return JbsApplication.getInstance().isNetworkAvailable();
+		return MineWeiboApplication.getInstance().isNetworkAvailable();
 	}
 
 	public void showNetworkConnectivityError(){
-		Toast.makeText(JbsApplication.getInstance(),"The current network is not available.",Toast.LENGTH_LONG).show();
+		Toast.makeText(MineWeiboApplication.getInstance(),"The current network is not available.",Toast.LENGTH_LONG).show();
 	}
 }

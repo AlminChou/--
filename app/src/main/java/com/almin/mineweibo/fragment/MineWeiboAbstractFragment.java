@@ -38,10 +38,10 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 
 		onJbsAttach(activity);
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater layoutInflater,
-			ViewGroup container, Bundle savedInstanceState) {
+							 ViewGroup container, Bundle savedInstanceState) {
 		View view = onJbsCreateView(layoutInflater, container,
 				savedInstanceState);
 		setHasOptionsMenu(true);
@@ -49,14 +49,14 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 		view.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+
 			}
 		});
 		return view;
 	}
-	
+
 	protected View onJbsCreateView(LayoutInflater layoutInflater,
-			ViewGroup container, Bundle savedInstanceState) {
+								   ViewGroup container, Bundle savedInstanceState) {
 		return super
 				.onCreateView(layoutInflater, container, savedInstanceState);
 	}
@@ -74,7 +74,7 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 	protected void onJbsResume() {
 
 	}
-	
+
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
@@ -87,15 +87,15 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 //			menu.removeGroup(i);
 //		}
 //	}
-	
+
 	public boolean onBackPressed() {
 		return mIsPopBackStack;
 	}
-	
+
 	protected String getActionBarTitle() {
 		return "";
 	}
-	
+
 	protected void updateActionbarStatus() {
 		Activity activity = getActivity();
 		if(activity != null){
@@ -107,7 +107,7 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 			}
 		}
 	}
-	
+
 	protected boolean isActionbarVisible() {
 		return true;
 	}
@@ -122,7 +122,7 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 
 	// just showProgress
 	protected void showSpinner(LayoutInflater layoutInflater,
-			ViewGroup container) {
+							   ViewGroup container) {
 		if (mSpinnerOverlay == null) {
 			mSpinnerOverlay = (ViewGroup) layoutInflater.inflate(
 					R.layout.overlay_spinner, container, false);
@@ -143,13 +143,13 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 		});
 		container.addView(mSpinnerOverlay);
 	}
-	
+
 
 	protected void hideSpinner() {
 		if (mSpinnerOverlay != null)
 			mSpinnerOverlay.setVisibility(View.GONE);
 	}
-	
+
 	protected void showToast(final String msg) {
 		final Activity activity = getActivity();
 		if (activity != null) {
@@ -159,8 +159,14 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 					Toast.makeText(getActivity(), msg + "", Toast.LENGTH_SHORT)
 							.show();
 				}
-
 			});
+		}
+	}
+
+	protected void runOnUiThread(Runnable runnable){
+		final Activity activity = getActivity();
+		if(activity!=null){
+			activity.runOnUiThread(runnable);
 		}
 	}
 }
