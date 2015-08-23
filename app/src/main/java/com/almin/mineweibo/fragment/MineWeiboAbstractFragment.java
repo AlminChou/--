@@ -11,11 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.almin.mineweibo.activity.MainActivity;
 import com.almin.mineweibo.activity.MineWeiboAbstractActivity;
-import com.almin.mineweibo.R;
+import com.almin.mineweibo.listener.OnFloatingActionButtonListener;
+import com.almin.mineweibo.listener.OnUiUpdateControllerListener;
 
-public abstract class MineWeiboAbstractFragment extends Fragment {
-	private ViewGroup mSpinnerOverlay;
+public abstract class MineWeiboAbstractFragment extends Fragment implements OnFloatingActionButtonListener {
+	private OnUiUpdateControllerListener mUpdateUiController;
 	protected Handler mHandler = new Handler();
 	protected boolean mIsPopBackStack = true;
 	public abstract String getFragmentTag();
@@ -27,22 +29,28 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		ActionBar actionBar = ((MineWeiboAbstractActivity)activity).getSupportActionBar();
-		if (actionBar != null) {
-			if (isActionbarVisible()) {
-				actionBar.show();
-			} else {
-				actionBar.hide();
+		MainActivity mainActivity = (MainActivity)activity;
+		if(mainActivity != null){
+			mUpdateUiController = mainActivity;
+			mainActivity.addFloatingActionButtonListeners(this);
+			mainActivity.updateCurrentFloatingActionButtonListener();
+			ActionBar actionBar = mainActivity.getSupportActionBar();
+			if (actionBar != null) {
+				if (isActionbarVisible()) {
+					actionBar.show();
+				} else {
+					actionBar.hide();
+				}
 			}
 		}
 
-		onJbsAttach(activity);
+		onMineWeiboAttach(activity);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater layoutInflater,
 							 ViewGroup container, Bundle savedInstanceState) {
-		View view = onJbsCreateView(layoutInflater, container,
+		View view = onMineWeiboCreateView(layoutInflater, container,
 				savedInstanceState);
 		setHasOptionsMenu(true);
 		updateActionbarStatus();
@@ -55,7 +63,7 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 		return view;
 	}
 
-	protected View onJbsCreateView(LayoutInflater layoutInflater,
+	protected View onMineWeiboCreateView(LayoutInflater layoutInflater,
 								   ViewGroup container, Bundle savedInstanceState) {
 		return super
 				.onCreateView(layoutInflater, container, savedInstanceState);
@@ -65,13 +73,13 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 
-		onJbsResume();
+		onMineWeiboResume();
 	}
 
-	protected void onJbsAttach(Activity activity) {
+	protected void onMineWeiboAttach(Activity activity) {
 	}
 
-	protected void onJbsResume() {
+	protected void onMineWeiboResume() {
 
 	}
 
@@ -80,7 +88,18 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 		super.onDestroyView();
 	}
 
-//	@Override
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		((MainActivity)getActivity()).removeFloatingActionButtonListeners(this);
+		onMineWeiboDestroy();
+	}
+
+	protected void onMineWeiboDestroy(){
+
+	}
+
+	//	@Override
 //	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 //		super.onCreateOptionsMenu(menu, inflater);
 //		for (int i = 0; i < menu.size(); i++) {
@@ -120,35 +139,6 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 		return true;
 	}
 
-	// just showProgress
-	protected void showSpinner(LayoutInflater layoutInflater,
-							   ViewGroup container) {
-		if (mSpinnerOverlay == null) {
-			mSpinnerOverlay = (ViewGroup) layoutInflater.inflate(
-					R.layout.overlay_spinner, container, false);
-		} else {
-			((ViewGroup) mSpinnerOverlay.getParent())
-					.removeView(mSpinnerOverlay);
-		}
-
-		mSpinnerOverlay.setVisibility(View.VISIBLE);
-		mSpinnerOverlay.findViewById(R.id.spinner).setVisibility(View.VISIBLE);
-
-		//to stop click pass
-		mSpinnerOverlay.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
-		container.addView(mSpinnerOverlay);
-	}
-
-
-	protected void hideSpinner() {
-		if (mSpinnerOverlay != null)
-			mSpinnerOverlay.setVisibility(View.GONE);
-	}
 
 	protected void showToast(final String msg) {
 		final Activity activity = getActivity();
@@ -163,10 +153,4 @@ public abstract class MineWeiboAbstractFragment extends Fragment {
 		}
 	}
 
-	protected void runOnUiThread(Runnable runnable){
-		final Activity activity = getActivity();
-		if(activity!=null){
-			activity.runOnUiThread(runnable);
-		}
-	}
 }

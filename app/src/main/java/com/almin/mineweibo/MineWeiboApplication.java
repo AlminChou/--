@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,6 +23,7 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by crazy on 2015/5/16.
@@ -33,36 +35,21 @@ public class MineWeiboApplication extends Application{
     private int mDisplayWidth;
     private int mDisplayHeight;
     private AndroidNetworkConnectivityManager mAndroidNetworkConnectivityManager;
-    private static final DateFormat sDateFormat = new SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss");
+    private static final DateFormat sDateFormat = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
 
     @Override
     public void onCreate() {
-        Log.e("onCreate", "JbsApplication----onCreate");
+        Log.e("onCreate", "MineWeiboApplication----onCreate");
         super.onCreate();
         if (instance == null) {
             instance = this;
         }
         MineWeiboConfiguration.init();
-//        initImageLoader(getApplicationContext());
-        //image-loader初始化
+        Fresco.initialize(getApplicationContext());
         // 其他初始化
         // 字体资源初始化
     }
-//
-//    @SuppressWarnings("deprecation")
-//    private void initImageLoader(Context context) {
-//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-//                context).threadPriority(Thread.NORM_PRIORITY - 1)
-//                .denyCacheImageMultipleSizesInMemory()
-//                .discCacheFileNameGenerator(new Md5FileNameGenerator())
-//                .tasksProcessingOrder(QueueProcessingType.FIFO)
-//                .writeDebugLogs()
-//                .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
-//                .build();
-//        ImageLoader.getInstance().init(config);
-//    }
 
     public static MineWeiboApplication getInstance() {
         return instance;
