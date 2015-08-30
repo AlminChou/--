@@ -11,4 +11,6 @@ public interface OnUiUpdateControllerListener {
     void hideSpinner();
     void updateOnUiThread(Runnable runnable);
     void showToast(String msg);
+    void showDrawerToggle();
+    void hideDrawerToggle();
 }

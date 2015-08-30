@@ -7,4 +7,5 @@ public interface OnFloatingActionButtonListener {
     boolean isFloatingActionButtonVisible();
     int getFloatingActionButtonColor();
     void floatingActionButtonOnClick();
+    int getFloatingActionButtonLogo();
 }

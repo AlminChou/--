@@ -1,6 +1,9 @@
 package com.almin.mineweibo.activity;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -17,7 +20,7 @@ import com.almin.mineweibo.listener.OnUiUpdateControllerListener;
 /**
  * Created by Crazy on 2015/6/1.
  */
-public class MineWeiboAbstractActivity extends AppCompatActivity implements OnUiUpdateControllerListener {
+public abstract class MineWeiboAbstractActivity extends AppCompatActivity implements OnUiUpdateControllerListener {
     private ViewGroup mSpinnerOverlay;
     private int mContainerId;
 
@@ -54,7 +57,7 @@ public class MineWeiboAbstractActivity extends AppCompatActivity implements OnUi
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager != null) {
             String tag = fragment.getFragmentTag();
-            fragmentManager.beginTransaction().add(mContainerId,fragment,tag).addToBackStack(tag).commitAllowingStateLoss();
+            fragmentManager.beginTransaction().add(mContainerId, fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
         }
     }
 
@@ -72,6 +75,16 @@ public class MineWeiboAbstractActivity extends AppCompatActivity implements OnUi
             String tag = fragment.getFragmentTag();
             fragmentManager.beginTransaction().replace(mContainerId, fragment, tag).commit();
         }
+    }
+
+    public MineWeiboAbstractFragment getCurrentFragment(){
+        MineWeiboAbstractFragment currentFragment = null;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        int entryCount = fragmentManager.getBackStackEntryCount();
+        if(entryCount > 0) {
+            currentFragment = (MineWeiboAbstractFragment) fragmentManager.findFragmentByTag(fragmentManager.getBackStackEntryAt(entryCount - 1).getName());
+        }
+        return currentFragment;
     }
 
     // just showProgress
